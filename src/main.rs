@@ -11,18 +11,17 @@ fn main() {
     let mut sys = System::new_all();
     let mut bandwith: u64 = 0;
     let mut freebandwith: u64 = 0;
+    let mut disk_space = 0;
     sys.refresh_all();
     
     let mut networks = Networks::new_with_refreshed_list();
     for (interface_name, network) in &networks {
         bandwith = network.total_transmitted() + network.total_received();
-        // println!("out: {}MB",network.total_transmitted()/1_000_000);
-        // println!("in: {}MB",network.total_received()/1_000_000);
     }
 
     let disks = Disks::new_with_refreshed_list();
     for disk in disks.list() {
-        println!("{:?}", disk.available_space()/1_000_000_000);
+        disk_space = disk.available_space()/1_000_000_000;
         break;
     }
     
@@ -36,10 +35,12 @@ fn main() {
         }
         let cpu = sys.cpus().get(0).unwrap();
         
-        let sysinfo = format!("{:.2}%,{} mb, {} Mb",
+        let sysinfo = format!("{},{:.2},{},{},{}",
+        System::host_name().unwrap(),
         cpu.cpu_usage(),
         sys.used_memory()/1_000_000,
-        freebandwith/1_000_000
+        freebandwith/1_000_000,
+        disk_space
         );
         sys.refresh_all();
 

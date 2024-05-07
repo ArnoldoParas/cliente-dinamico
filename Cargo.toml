@@ -10,3 +10,4 @@ before-packaging-command = "cargo build --release"
 
 [dependencies]
 sysinfo = "0.30.11"
+tungstenite = "0.21.0"

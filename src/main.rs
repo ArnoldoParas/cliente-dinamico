@@ -35,12 +35,13 @@ fn main() {
         }
         let cpu = sys.cpus().get(0).unwrap();
         
-        let sysinfo = format!("{},{:.2},{},{},{}",
+        let sysinfo = format!("{},{:.2},{},{},{},{}",
         System::host_name().unwrap(),
         cpu.cpu_usage(),
         sys.used_memory()/1_000_000,
         freebandwith/1_000_000,
-        disk_space
+        disk_space,
+        sys.total_memory()/1_000_000
         );
         sys.refresh_all();
 

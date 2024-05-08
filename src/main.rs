@@ -30,7 +30,6 @@ fn main() {
         
         networks.refresh();
         for (interface_name, network) in &networks {
-            // freebandwith = network.transmitted() + network.received();
             freebandwith = bandwith - (network.transmitted() + network.received());
         }
         let cpu = sys.cpus().get(0).unwrap();
@@ -46,16 +45,7 @@ fn main() {
         sys.refresh_all();
 
         thread::sleep(Duration::from_secs(1));
-        // let sysinfo = format!("{},{},{},{},{},{},{}",
-        // System::host_name().unwrap(),
-        // cpu.brand().trim(),
-        // cpu.frequency(),
-        // sys.physical_core_count().unwrap(),
-        // sys.total_memory(),
-        // System::long_os_version().unwrap(),
-        // System::kernel_version().unwrap()
-        // );
         println!("{}", sysinfo);
-        ws.send(tungstenite::Message::Text(sysinfo));
+        ws.send(tungstenite::Message::Text(sysinfo)).expect("Failed to send");
     }
 }
